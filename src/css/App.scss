@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
+$font-main: 'Raleway', sans-serif;
+
+    
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: $font-main;
+  }
+  
+  body {
+    background-color: #dcdcdc;
+  }
+
+  .todo-app {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 720px;
+    min-height: 600px;
+    text-align: center;
+    margin: 128px auto;
+    border-radius: 10px;
+    padding-bottom: 32px;
+  }
+  
+  h1 {
+    margin: 32px 0;
+    color: #f8c2b1;
+    font-size: 80px;
+  }
+  
+  .complete {
+    text-decoration: line-through;
+    text-decoration-color: #d3d3d3;
+    & p{
+      color: #d3d3d3;
+    }
+  }
+
+  .todo-text{
+      display: inline-flex;
+      justify-content: space-between;
+     
+  }
+  
+  .todo-form {
+    margin-bottom: 0px;
+    color: #7e7e7e;
+  }
+  
+  .todo-input {
+    padding: 16px 16px 16px 39px;
+    border: 1px solid darkgray;
+    outline: none;
+    width: 90%;
+    background-color: whitesmoke;
+    font-style: italic;
+  }
+  
+  .todo-input::placeholder {
+    color: #d3d3d3;
+  }
+  
+  .todo-container {
+    border: 1px solid darkgray;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+  
+  .todo-row {
+    color:#616161;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px auto;
+    background-color: whitesmoke;  
+    padding: 16px;
+    width: 90%;
+    border: 1px solid darkgray;
+    font-weight: bold;
+  }
+  
+  
+  .icons {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .delete-icon {
+    margin-right: 5px;
+    color: #7e7e7e;
+  }
+  
+  .edit-icon {
+    color: #7e7e7e;
+  }
+
+  .footer{
+    color:#616161;
+    display: flex;
+    align-items: center;
+    margin: 0px auto;
+    background-color: whitesmoke;  
+    padding: 8px;
+    width: 90%;
+    border: 1px solid darkgray;
+    font-weight: bold;
+    justify-content: space-between;
+    box-shadow: grey 0px 1px, 
+                darkgrey 0px 2px, 
+                whitesmoke 0px 3px;
+  }
+
+  button{
+    outline: none;
+    border: none;
+    padding: 5px;
+    background-color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+  }
+.text{
+    padding-left: 10px;
+  }
+
+  .item-count{
+    font-size: 12px;
+    padding-left: 8px;
+    width: 100px;
+    text-align: left;
+  }
+
+  .checkbox{
+    height: 16px;
+    width: 16px;
+  }
+
+  .buttons .isActive {
+    border: 1px solid #f8c2b1;
+  }
