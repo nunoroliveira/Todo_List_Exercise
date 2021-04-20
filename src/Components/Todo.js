@@ -5,11 +5,11 @@ import {RiChatDeleteLine} from 'react-icons/ri';
 import {TiEdit} from 'react-icons/ti';
 
 
-function Todo({todos, completeTodo, removeTodo, updateTodo}) {
+function Todo({todo, complete, remove, update, ...otherProps}) {
     const [edit, setEdit] = useState({id: null, value: ''});
 
     const submitUpdate = value => {
-        updateTodo(edit.id, value);
+        update(edit.id, value);
         setEdit({
             id: null,
             value: ''
@@ -21,11 +21,10 @@ function Todo({todos, completeTodo, removeTodo, updateTodo}) {
     }
 
 
-    return <ul>{
-        todos.map((todo, index) => (
-            <li  key={index} className={todo.isComplete ? 'todo-row complete' : 'todo-row'}>
+    return (
+            <li className={todo.isComplete ? 'todo-row complete' : 'todo-row'} {...otherProps}>
                 <div className="todo-text" key={todo.id}>
-                    <Checkbox checked={todo.isComplete} onClick={() => completeTodo(todo.id)}/>
+                    <Checkbox checked={todo.isComplete} onClick={() => complete(todo.id)}/>
                     <p className="text">{todo.text}</p>
                 </div>
                 <div className="icons">
@@ -34,13 +33,12 @@ function Todo({todos, completeTodo, removeTodo, updateTodo}) {
                         className='edit-icon'
                     />
                     <RiChatDeleteLine
-                        onClick={() => removeTodo(todo.id)}
+                        onClick={() => remove(todo.id)}
                         className='delete-icon'
                     />
                 </div>
             </li>
-        ))
-    }</ul>
+        )
 }
 
 export default Todo;
