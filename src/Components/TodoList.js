@@ -1,70 +1,77 @@
-import React, {useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import Footer from './Footer'
 
+const isTodoValid = ({ text }) => text && !/^\s*$/.test(text)
 
 const TodoList = () => {
     const [todos, setTodos] = useState([]);
-    const [filterTodos, setFilterTodos] = useState('');
-
-    const addTodo = todo => {
-        if (!todo.text || /^\s*$/.test(todo.text)) {
-            return;
-        }
-
-        const newTodos = [todo, ...todos];
-        setTodos(newTodos);
-    };
-
-
-    const updateTodo = (todoId, newValue) => {
-        if (!newValue.text || /^\s*$/.test(newValue.text)) {
-            return;
-        }
-
-        setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
-    }
-
-    const removeTodo = id => {
-        const removeArr = [...todos].filter(todo => todo.id !== id);
-
-        setTodos(removeArr);
-    }
-
-
-    const completeTodo = id => {
-        const updatedTodos = todos.map(todo => {
-            if (todo.id === id) {
-                todo.isComplete = !todo.isComplete;
-            }
-            return todo;
-        });
-
-        setTodos(updatedTodos);
-    };
-
-
-    const getFilteredTodos = () => {
-        switch (filterTodos) {
+    const [selectedFilter, setSelectedFilter] = useState('');
+    const [filteredTodos, setFilteredTodos] = useState([]);
+    const getFilteredTodos = useCallback((filter) => {
+        console.log(todos)
+        switch (filter) {
             case 'active':
-                return todos.filter(todo => !todo.isComplete);
+                return todos.filter(({ isComplete }) => !isComplete);
             case 'completed':
-                return todos.filter(todo => todo.isComplete);
+                return todos.filter(({ isComplete }) => isComplete);
             default:
                 return todos;
         }
+    }, [todos]);
+    const filterTodos = (filter = selectedFilter) => {
+        setFilteredTodos(getFilteredTodos(filter));
     }
 
+    useEffect(filterTodos, [getFilteredTodos, selectedFilter]);
+
+    const addTodo = todo => {
+        if (isTodoValid(todo)) {
+            setTodos([todo, ...todos]);
+            filterTodos(selectedFilter);
+        }
+    };
+
+    const updateTodo = (todoId, newValue) => {
+        if (isTodoValid(newValue)) {
+            setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
+            filterTodos(selectedFilter);
+        }
+    }
+
+    const removeTodo = id => {
+        setTodos(todos.filter(todo => todo.id !== id));
+        filterTodos(selectedFilter);
+    }
+
+    const completeTodo = id => {
+        setTodos(
+            todos.map(todo => {
+                if (todo.id === id) {
+                    todo.isComplete = !todo.isComplete;
+                }
+                return todo;
+            })
+        );
+        filterTodos(selectedFilter);
+    };
 
     return (
         <div className="todo-list">
-            <TodoForm onSubmit={addTodo}/>
-
-            <Todo todos={getFilteredTodos()} completeTodo={completeTodo} removeTodo={removeTodo}
-                  updateTodo={updateTodo}/>
-
-            <Footer todos={todos} filterTodos={filterTodos} setFilterTodos={setFilterTodos}/>
+            <TodoForm onSubmit={addTodo} />
+            <ul>
+                {
+                    filteredTodos.map((todo, index) => <Todo key={index} todo={todo} complete={completeTodo} remove={removeTodo} update={updateTodo} />)
+                }
+            </ul>
+            <Footer
+                todos={todos}
+                setSelectedFilter={(value) => {
+                    setSelectedFilter(value);
+                    filterTodos(value);
+                }}
+                selectedFilter={selectedFilter} />
         </div>
     )
 }

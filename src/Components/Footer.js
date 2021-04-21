@@ -1,23 +1,28 @@
 import React from 'react';
 
-const Footer = ({todos, filterTodos, setFilterTodos}) => {
+const Footer = ({ todos, selectedFilter, setSelectedFilter }) => {
     const allCompletedTodos = todos.filter(todo => !todo.isComplete).length;
+
+    const createFilterButton = (name, value) => (
+        <button
+            className={`${name.toLowerCase()} ${selectedFilter === value ? "isActive" : ""}`}
+            onClick={() => {
+                setSelectedFilter(value);    
+                }
+            }>
+                {name}
+        </button>
+    );
 
     return (
         <div className="footer">
             <p className="item-count">{allCompletedTodos} items left</p>
             <div className="buttons">
-                <button className={filterTodos === '' ? "all isActive" : "all"}
-                        onClick={() => setFilterTodos('')}>All
-                </button>
-                <button className={filterTodos === 'active' ? "active isActive" : "active"}
-                        onClick={() => setFilterTodos('active')}>Active
-                </button>
-                <button className={filterTodos === 'completed' ? "completed isActive" : "completed"}
-                        onClick={() => setFilterTodos('completed')}>Completed
-                </button>
+                {createFilterButton('All', '')}
+                {createFilterButton('Active', 'active')}
+                {createFilterButton('Completed', 'completed')}
             </div>
-            <div className="item-count"/>
+            <div className="item-count" />
         </div>
     );
 };
